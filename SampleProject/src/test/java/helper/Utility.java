@@ -34,7 +34,8 @@ public class Utility {
 			wait.until(ExpectedConditions.visibilityOf(element));
 			wait.until(ExpectedConditions.elementToBeClickable(element));
 			return element; //till this line method overloading
-		}//validating message we are providing the locator as parameter
+		}
+		//validating message we are providing the locator as parameter
 		public static void validateMessage( WebElement element, String msg)
 		{//"Credit Line Approve" suppose this messssage need to be pass so we are verifying the msg
 			Assert.assertEquals(element.getText(), msg);
@@ -71,6 +72,16 @@ public class Utility {
 		{
 			boolean status = new WebDriverWait(driver, 30).until(ExpectedConditions.alertIsPresent()).getText().equalsIgnoreCase(msg);
 			Assert.assertTrue(status);
+			//way 1-String veri=new WebDriverWait(driver, 30).until(ExpectedConditions.alertIsPresent()).getText();
+			//Assert.assertTrue(true, veri);
+			/*way 2-String expected= new WebDriverWait(driver,30).until(ExpectedConditions.alertIsPresent()).getText();
+			 * //Assert.assertTrue(True, ver); //do not need the boolean when we  are using string ,hrodoy's method
+			 * need not to declare String as parameter
+			System.out.println(expected);
+			String actual="";
+			Assert.assertEquals(actual, expected);// we can compare the expected vs actual so 
+			
+			//way2-*/
 		}
 		public void handleFrame(WebDriver driver, int index)	
 		{
@@ -84,7 +95,7 @@ public class Utility {
 			
 			File src=ts.getScreenshotAs(OutputType.FILE);//we create a method and put the file
 			
-			try{// want to see why fail
+			try{// if fail ,want to see why fail
 				FileHandler.copy(src, new File(dest));
 			}catch(IOException e){
 				System.out.println("Screenshot Failed"+e.getMessage());

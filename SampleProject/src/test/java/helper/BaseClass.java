@@ -1,4 +1,5 @@
 package helper;
+import java.io.File;
 import java.io.IOException;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
@@ -8,8 +9,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.MediaEntityModelProvider;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
+import dataProviderFactorry.DataProviderFactory;
 
 public class BaseClass {
 //we are creating obj so that we can reference back them
@@ -25,7 +29,7 @@ public class BaseClass {
 		//extension/impoprt from extent reporting, creating the report in html format
 		//initializing user dir  AP is the name of the application , the report will generate here like AP day time AP_1_1:19
 		//the report I want it as a html format
-		ExtentHtmlReporter reporter= new ExtentHtmlReporter(new File(System.setProperty("user.dir")+ "/Reports/AP "+Utility.getTime()+".html"));
+		ExtentHtmlReporter reporter= new ExtentHtmlReporter(new File(System.getProperty("user.dir")+ "/Reports/AP_ "+Utility.getTime()+".html"));
 		//report will generate, take the screenshot
 		report =new ExtentReports();
 		report.attachReporter(reporter); // this will attach report
@@ -38,9 +42,10 @@ public class BaseClass {
 			// we are calling the  driver first from browser fctory
 			// we have to deczlare what browser I want to work with
 			System.out.println("LOG:INFO: Creating Browser Session");
-			// we are getting the info from dataprivider factory
-			driver =BrowserFactory.startApplication(DataProviderFactory,getConfig().getBrowser()
-					,DataProviderFactory,getConfig().getStagingURL());
+			// we are getting the info from dataprovider factory
+			driver = BrowserFactory.startApplication(
+					DataProviderFactory.getConfig().getBrowser()
+					,DataProviderFactory.getConfig().getStagingURL());
 			System.out.println("LOG:INFO:Browser Session Created");
 		}
 		// it will execute after every method
@@ -60,7 +65,7 @@ public class BaseClass {
 					//picture type from java it will catch the if there is any problem to capture the screen shot  .. 
 					//build is a action class method 
 					//this will going to attach the result if it is not able to take the result
-					logger.pass("Test Scenario pass",MediaEntityModelProvider.createScreenCaptureFromPath(Utility.captureScreenshot(driver)).build());
+					logger.pass("Test Scenario pass",MediaEntityBuilder.createScreenCaptureFromPath(Utility.captureScreenshot(driver)).build());
 				
 				}catch(IOException e){ //if some type of error happening it will catch 
 					System.out.println("Not able to attach Screenshot"+e.getMessage());
@@ -69,7 +74,7 @@ public class BaseClass {
 			else if(status==ITestResult.FAILURE)
 			{
 				try{//throwable will catch what type of error it was is it IO? throwable? 
-				logger.fail("Test Failed"+result.getThrowable().getMessage(),MediaEntityModelProvider.createScreenCaptureFromPath(Utility.captureScreenshot(driver)).build());
+				logger.fail("Test Failed"+result.getThrowable().getMessage(),MediaEntityBuilder.createScreenCaptureFromPath(Utility.captureScreenshot(driver)).build());
 			}catch(IOException e){
 				System.out.println("Not able to attach screenshot"+ e.getMessage());
 				}

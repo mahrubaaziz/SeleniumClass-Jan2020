@@ -21,7 +21,7 @@ public class BrowserFactory {
 		}
 		else if(browserName.equalsIgnoreCase("Chrome"))
 		{//we are setting the driver then we getting the driver from the directory
-			System.setProperty("webdriver.chrome.driver",System.getProperty(("user.dir")+"/drivers/chromedriver.exe"));
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/drivers/chromedriver.exe");
 			driver=new ChromeDriver();
 		}
 		else if(browserName.equalsIgnoreCase("IE"))
